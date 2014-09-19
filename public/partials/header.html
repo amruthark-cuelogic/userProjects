@@ -8,7 +8,8 @@
                     <span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand" href="#">Tycoons App</a>
-                <button type="button" class="btn btn-default navbar-btn">Login in</button>
+
+              	<a class="login-link" ng-controller="logotCtrl" ng-Click="destroyCookie()" href="#/login" ng-show="getCookie.data">Logout</a>
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right" ng-controller="navCtrl" class="menu">

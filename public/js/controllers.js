@@ -1,4 +1,4 @@
-angular.module('userProjects.moduleControllers', [])
+angular.module('userProjects.moduleControllers', ['userProjects.moduleServices'])
 .controller('navCtrl', ['$scope', '$location' , function($scope, $location){
 	$scope.items = [
 		{name: 'List of projects', path: '#add', pathname: '/add' },
@@ -30,33 +30,33 @@ angular.module('userProjects.moduleControllers', [])
 		$scope.formData = {};	
 	};
 })
-/*.controller('listCtrl', function ($scope) {
-	$http.get('/projects')
-	.success(function(data, status, headers, config){
-
-	})
-	.error(function(data){
-		console
-	})
-})*/
 .controller('MainController', function($scope) {
 
 	$scope.tagline = 'To the moon and back!';	
 
 })
-.controller('loginFormCtrl', ['$scope','$location','Auth', function($scope, $location, Auth) {
-  // hide error messages until 'submit' event
-	$scope.submitted = false;
-	$scope.submit = function() {
-		if($scope.username && $scope.password) {
-			var valid = Auth.authorize($scope.username, $scope.password);
-			if(valid) { 
-				$location.path('/');
-			} else {
-				alert("Invaid Login Crendentials");
-			}
-		} else {
-			alert("Please enter valid username and password");
-		}
-	};
-}]);
+.controller('loginFormCtrl', function($scope, $location, $timeout, validateLogin, AuthenticationService) {
+	//button disabled when value is not present
+	$scope.disabled = function() {
+	//email and password is exist then button clickable
+	if ($scope.username && $scope.password) {
+		return false;
+	}
+		return true;
+	}
+	$scope.login = function() {
+		validateLogin.formValidation($scope.username,$scope.password).then(function(response) {
+			AuthenticationService.createCookie(response);
+			$location.path("/");
+		},function(error) {
+			console.log(error);
+			alert('Invalid details');
+		});
+	}	
+})
+.controller('logotCtrl', function($scope, $rootScope, AuthenticationService) {
+	//remove cookie
+	$scope.destroyCookie = function() {
+		AuthenticationService.destroy();
+	}
+});

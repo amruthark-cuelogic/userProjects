@@ -5,9 +5,11 @@ var  express        = require('express')
 	,cookieParser 	= require('cookie-parser');
 
 // projects ==================================================
-var routes = require('./app/routes'); // pass our application into our projects
-var projects = require('./app/controllers/project'); // pass our application into our projects
+var routes = require('./app/routes'); 
+var projects = require('./app/controllers/project'); 
+var users = require('./app/controllers/users'); 
 var setup = require('./config/setup.js');
+
 
 	// connect to our mongoDB database (commented out after you enter in your own credentials)
 var mongoose = require('mongoose');
@@ -27,26 +29,28 @@ var port = process.env.PORT || 8080; // set our port
 // get all data/stuff of the body (POST) parameters
 app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-form-urlencoded
 app.use(bodyParser.json()); // parse application/vnd.api+json as json
-app.use(cookieParser());
+app.use(cookieParser('very secret'));
 app.use(express.static(__dirname + '/public')); // set the static files location /public/img will be /img for users
 
 //index
-app.get('*', routes.index);
+app.get('*', [function(req,res,next){console.log(req.cookies); next();},routes.index]);
+
+app.post('/login', users.login);
 
 // listing the projects
-app.get('/projects', projects.list);
+app.get('/projects', [users.authenticate, projects.list]);
 
 //save the new project
-app.post('/projects', projects.add);
+app.post('/projects', [users.authenticate, projects.add]);
 
 //save the updated project
-app.get('/projects/:id', projects.one);
+app.get('/projects/:id', [users.authenticate, projects.one]);
 
 //save the updated project
-app.put('/projects/:id', projects.edit);
+app.put('/projects/:id', [users.authenticate, projects.edit]);
 
 //delete the project
-app.delete('/projects/:id', projects.delete);
+app.delete('/projects/:id', [users.authenticate, projects.delete]);
 
 
 // start app ===============================================
