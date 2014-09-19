@@ -1,0 +1,52 @@
+<div class="container">
+	<div class="text-center">
+		<h1>Add a New Project</h1>
+	</div> 
+	<div id="todo-form" class="row">
+		<div class="col-sm-8 col-sm-offset-2 text-center">
+			<form name="project">
+				<div class="form-group">
+					<div class="display-field">
+						<label class="label-format">Project Name:		</label>
+						<input type="text" ng-model="formData.name" name="name" required>
+					</div>
+					<span ng-show="project.name.$dirty && project.name.$error.required">Required: Please provide project name</span> 
+					<div class="display-field">
+						<label class="label-format">Project Summary:	</label>
+						<input type="text" ng-model="formData.summary" name="summary">
+					</div>
+					<div class="display-field">
+						<label class="label-format">Audience:	</label>
+						<input type="text" ng-model="formData.audience" name="audience" required>
+					</div>
+					<span ng-show="project.audience.$dirty && project.audience.$error.required">Required: Please provide project audience</span> 
+					<div class="display-field">
+						<label class="label-format" style="position:relative; left:-53px;">	Select users:</label>
+						<select ng-model="formData.classification" name="users" style="position:relative; left:-53px;" required>
+							<option value="private">Private</option>
+							<option value="public">Public</option>
+						</select>
+					</div>
+					<div class="display-field">
+						<label class="label-format">Start Date:	</label>
+						<input type="date" ng-model="formData.startdate" name="startdate" required bs-datepicker>
+					</div>
+					<span ng-show="project.startdate.$dirty && project.startdate.$error.required">Required: Please provide start date</span> 
+					<div class="display-field">
+						<label class="label-format">End Date:	</label>
+						<input type="date" ng-model="formData.enddate" name="enddate" required bs-datepicker>
+					</div>
+					<span ng-show="project.enddate.$dirty && project.enddate.$error.required">Required: Please provide start date</span>
+					<div class="display-field">
+						<label class="label-format">Created By:		</label>
+						<input type="text" ng-model="formData.createdby" name="createdby" required>
+					</div>
+					<span ng-show="project.createdby.$dirty && project.createdby.$error.required">Required: Please provide project name</span> 		
+
+				</div>
+				<button type="submit" class="btn btn-primary btn-lg" ng-click="add()">Add</button>
+				<button type="submit" class="btn btn-primary btn-lg" ng-click="cancel()">Cancel</button>
+			</form>
+		</div>
+	</div> 
+</div>
